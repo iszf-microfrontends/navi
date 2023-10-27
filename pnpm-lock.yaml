@@ -17,6 +17,18 @@ dependencies:
   '@mantine/hooks':
     specifier: ^6.0.21
     version: 6.0.21(react@18.2.0)
+  '@mantine/notifications':
+    specifier: ^6.0.21
+    version: 6.0.21(@mantine/core@6.0.21)(@mantine/hooks@6.0.21)(react-dom@18.2.0)(react@18.2.0)
+  effector:
+    specifier: ^22.8.7
+    version: 22.8.7
+  effector-react:
+    specifier: ^22.5.4
+    version: 22.5.4(effector@22.8.7)(react@18.2.0)
+  patronum:
+    specifier: ^1.20.0
+    version: 1.20.0(effector@22.8.7)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -55,6 +67,12 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18.2.13
     version: 18.2.13
+  '@typescript-eslint/eslint-plugin':
+    specifier: ^6.7.5
+    version: 6.7.5(@typescript-eslint/parser@6.7.5)(eslint@8.51.0)(typescript@5.2.2)
+  '@typescript-eslint/parser':
+    specifier: ^6.7.5
+    version: 6.7.5(eslint@8.51.0)(typescript@5.2.2)
   babel-loader:
     specifier: ^9.1.3
     version: 9.1.3(@babel/core@7.23.2)(webpack@5.89.0)
@@ -67,6 +85,9 @@ devDependencies:
   eslint:
     specifier: ^8.51.0
     version: 8.51.0
+  eslint-plugin-effector:
+    specifier: ^0.11.0
+    version: 0.11.0(effector@22.8.7)(eslint@8.51.0)
   eslint-plugin-react-refresh:
     specifier: ^0.4.3
     version: 0.4.3(eslint@8.51.0)
@@ -1115,6 +1136,22 @@ packages:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /@mantine/notifications@6.0.21(@mantine/core@6.0.21)(@mantine/hooks@6.0.21)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-qsrqxuJHK8b67sf9Pfk+xyhvpf9jMsivW8vchfnJfjv7yz1lLvezjytMFp4fMDoYhjHnDPOEc/YFockK4muhOw==}
+    peerDependencies:
+      '@mantine/core': 6.0.21
+      '@mantine/hooks': 6.0.21
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 6.0.21(@emotion/react@11.11.1)(@mantine/hooks@6.0.21)(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 6.0.21(react@18.2.0)
+      '@mantine/utils': 6.0.21(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-transition-group: 4.4.2(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /@mantine/styles@6.0.21(@emotion/react@11.11.1)(react-dom@18.2.0)(react@18.2.0):
@@ -3123,6 +3160,13 @@ packages:
       utila: 0.4.0
     dev: true
 
+  /dom-helpers@5.2.1:
+    resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
+    dependencies:
+      '@babel/runtime': 7.23.1
+      csstype: 3.1.2
+    dev: false
+
   /dom-serializer@1.4.1:
     resolution: {integrity: sha512-VHwB3KfrcOOkelEG2ZOfxqLZdfkil8PtJi4P8N2MMXucZq2yLp75ClViUlOVwyoHEDjYU433Aq+5zWP61+RGag==}
     dependencies:
@@ -3168,6 +3212,22 @@ packages:
 
   /ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
+
+  /effector-react@22.5.4(effector@22.8.7)(react@18.2.0):
+    resolution: {integrity: sha512-7HmtfD/vqmqvGnu6jMojmns9cxIW45JPBkGgHrwvbXGpbm0bz2fmVj6PIttv+Bamfmrf9FAy2bZhs+Rwj+3Mxw==}
+    engines: {node: '>=11.0.0'}
+    peerDependencies:
+      effector: ^22.0.2
+      react: '>=16.8.0 <19.0.0'
+    dependencies:
+      effector: 22.8.7
+      react: 18.2.0
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  /effector@22.8.7:
+    resolution: {integrity: sha512-vCevjxmFwnZJuRGtqjwfi+sHtu+7gK3qdbv4fxi/AsMdDtoMeoz9C3/28pjNABviZeEARj6ZfAHbNAq5i9d7RQ==}
+    engines: {node: '>=11.0.0'}
 
   /electron-to-chromium@1.4.537:
     resolution: {integrity: sha512-W1+g9qs9hviII0HAwOdehGYkr+zt7KKdmCcJcjH0mYg6oL8+ioT3Skjmt7BLoAQqXhjf40AXd+HlR4oAWMlXjA==}
@@ -3448,6 +3508,18 @@ packages:
       eslint-import-resolver-node: 0.3.9
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /eslint-plugin-effector@0.11.0(effector@22.8.7)(eslint@8.51.0):
+    resolution: {integrity: sha512-iujBwqh8z09lxrnTF3jAj2WHwxdKYWzf2DXn6ambdBjx3wgHgLt2vjpzctXxWR1+PPyoj3GyQYY7tsnc/RTNTw==}
+    engines: {node: ^14 || ^15 || ^16 || ^17 || ^18 || ^19 || ^20}
+    peerDependencies:
+      effector: '*'
+      eslint: 7 || 8
+    dependencies:
+      effector: 22.8.7
+      eslint: 8.51.0
+      prettier: 2.8.8
     dev: true
 
   /eslint-plugin-es-x@7.2.0(eslint@8.51.0):
@@ -6255,6 +6327,14 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
+  /patronum@1.20.0(effector@22.8.7):
+    resolution: {integrity: sha512-UsUR8nUbSPJ0kEQPNorZ/0+Rwlk+c45O4BfqlLHAdRQvx1C7ZSfC9txfPwJo+fajRtzVLebZm1m+67+Ke9SgdA==}
+    peerDependencies:
+      effector: ^22.1.2
+    dependencies:
+      effector: 22.8.7
+    dev: false
+
   /periscopic@3.1.0:
     resolution: {integrity: sha512-vKiQ8RRtkl9P+r/+oefh25C3fhybptkHKCZSPlcXiJux2tJF55GnEj3BVn4A5gKfq9NWWXXrxkHBwVPUfH0opw==}
     dependencies:
@@ -6303,6 +6383,12 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       fast-diff: 1.3.0
+    dev: true
+
+  /prettier@2.8.8:
+    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
     dev: true
 
   /prettier@3.0.3:
@@ -6495,6 +6581,20 @@ packages:
       use-latest: 1.2.1(@types/react@18.2.28)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
+    dev: false
+
+  /react-transition-group@4.4.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==}
+    peerDependencies:
+      react: '>=16.6.0'
+      react-dom: '>=16.6.0'
+    dependencies:
+      '@babel/runtime': 7.23.1
+      dom-helpers: 5.2.1
+      loose-envify: 1.4.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react@18.2.0:
@@ -7624,6 +7724,14 @@ packages:
       detect-node-es: 1.1.0
       react: 18.2.0
       tslib: 2.6.2
+    dev: false
+
+  /use-sync-external-store@1.2.0(react@18.2.0):
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /util-deprecate@1.0.2:
