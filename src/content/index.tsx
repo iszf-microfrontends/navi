@@ -1,5 +1,5 @@
-import { Title } from '@mantine/core';
+import { Form } from '~/widgets/form';
 
-const Content = (): JSX.Element => <Title>Hello world!</Title>;
+const Content = (): JSX.Element => <Form />;
 
 export default Content;

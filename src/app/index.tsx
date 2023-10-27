@@ -1,10 +1,12 @@
 import { Box, MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 
 import Content from '~/content';
 
 export const App = (): JSX.Element => (
   <MantineProvider withNormalizeCSS>
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+    <Notifications />
+    <Box p={20}>
       <Content />
     </Box>
   </MantineProvider>
