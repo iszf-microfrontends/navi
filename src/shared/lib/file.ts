@@ -1,6 +1,11 @@
 import { createEffect } from 'effector';
 
-export const readFileAsArrayBufferFx = createEffect<File, { file: File; arrayBuffer: ArrayBuffer }>(async (file) => {
+export interface ReadFileAsArrayBufferResult {
+  file: File;
+  arrayBuffer: ArrayBuffer;
+}
+
+export const readFileAsArrayBufferFx = createEffect<File, ReadFileAsArrayBufferResult>(async (file) => {
   const arrayBuffer = await file.arrayBuffer();
   return {
     file,
