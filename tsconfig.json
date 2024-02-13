@@ -20,10 +20,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["src/*"]
-    }
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      }
+    ]
   },
-  "include": ["src", "preview-server.mts"]
+  "include": ["src", "types"]
 }

@@ -1,13 +1,13 @@
-import { Box, MantineProvider } from '@mantine/core';
+import { type FC } from 'react';
+import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import Content from '../ui/content';
+import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 
-import Content from '~/content';
-
-export const App = (): JSX.Element => (
-  <MantineProvider withNormalizeCSS>
+export const App: FC = () => (
+  <MantineProvider withCssVariables>
     <Notifications />
-    <Box p={20}>
-      <Content />
-    </Box>
+    <Content />
   </MantineProvider>
 );

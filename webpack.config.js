@@ -3,67 +3,94 @@ const path = require('path');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const { DefinePlugin } = require('webpack');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { dependencies: deps } = require('./package.json');
 
-const envConfig = { ...dotenv.config({ path: `.env.${process.env.NODE_ENV}` }).parsed };
+const NODE_ENV = process.env.NODE_ENV;
 
-module.exports = () => {
-  const isDev = process.env.NODE_ENV === 'development';
+const isDev = NODE_ENV === 'development';
+const isAnalyze = NODE_ENV === 'analyze';
 
-  const babelOptions = {
-    plugins: [isDev && require.resolve('react-refresh/babel'), 'effector/babel-plugin'].filter(Boolean),
-    presets: [['@babel/preset-react', { runtime: 'automatic' }], '@babel/preset-typescript', 'patronum/babel-preset'],
-  };
+const envConfig = {
+  ...dotenv.config({ path: `.env.${isAnalyze ? 'development' : NODE_ENV}` }).parsed,
+};
 
-  const devPlugins = [];
-  if (isDev) {
-    devPlugins.push(
-      new ReactRefreshWebpackPlugin({
-        exclude: [/node_modules/, /bootstrap\.tsx$/],
-      }),
-    );
-  }
-
-  return {
-    target: 'web',
-    entry: './src/index',
-    mode: isDev ? 'development' : 'production',
-    devtool: isDev ? 'inline-source-map' : 'source-map',
-    devServer: {
-      hot: true,
-      static: path.join(__dirname, 'dist'),
-      port: envConfig.PORT,
-      liveReload: false,
-    },
-    output: {
-      publicPath: 'auto',
-      clean: true,
-    },
-    module: {
-      rules: [
-        {
-          test: /\.(ts|tsx)?$/,
-          exclude: /node_modules/,
-          use: [
-            {
-              loader: 'babel-loader',
-              options: babelOptions,
+module.exports = {
+  target: 'web',
+  entry: './src/index',
+  mode: isDev ? 'development' : 'production',
+  devtool: isDev ? 'inline-source-map' : 'source-map',
+  devServer: {
+    hot: true,
+    static: path.join(__dirname, 'dist'),
+    port: envConfig.PORT,
+  },
+  output: {
+    publicPath: 'auto',
+    clean: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.json$/,
+        type: 'json',
+      },
+      {
+        test: /\.css$/,
+        oneOf: [
+          {
+            test: /\.module\.css$/,
+            use: [
+              MiniCssExtractPlugin.loader,
+              {
+                loader: 'css-loader',
+                options: {
+                  importLoaders: 1,
+                  modules: true,
+                },
+              },
+              'postcss-loader',
+            ],
+          },
+          {
+            use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
+          },
+        ],
+      },
+      {
+        test: /\.(ts|tsx)?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: [isDev && 'react-refresh/babel'].filter(Boolean),
+              presets: [
+                ['@babel/preset-react', { runtime: 'automatic' }],
+                '@babel/preset-typescript',
+              ],
             },
-          ],
-        },
-      ],
-    },
-    plugins: [
+          },
+        ],
+      },
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin(),
+    !isDev &&
       new ModuleFederationPlugin({
         name: envConfig.APP_NAME,
         filename: 'remoteEntry.js',
         exposes: {
-          './Content': './src/content',
+          './Content': './src/ui/content',
         },
         shared: {
-          ...deps,
           react: {
             singleton: true,
             requiredVersion: deps['react'],
@@ -74,22 +101,23 @@ module.exports = () => {
           },
         },
       }),
-      new HtmlWebpackPlugin({
-        template: './public/index.html',
-        templateParameters: {
-          title: envConfig.APP_NAME,
-        },
-        chunks: ['main'],
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      templateParameters: {
+        title: envConfig.APP_NAME,
+      },
+    }),
+    new DefinePlugin({
+      'process.env': JSON.stringify(envConfig),
+      __DEV__: isDev,
+    }),
+    isDev &&
+      new ReactRefreshWebpackPlugin({
+        exclude: [/node_modules/, /bootstrap\.tsx$/],
       }),
-      new DefinePlugin({
-        'process.env': JSON.stringify(envConfig),
-        __DEV__: isDev,
-      }),
-      ...devPlugins,
-    ],
-    resolve: {
-      extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      plugins: [new TsconfigPathsPlugin()],
-    },
-  };
+    isAnalyze && new BundleAnalyzerPlugin(),
+  ].filter(Boolean),
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+  },
 };

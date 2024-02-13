@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import path from 'path';
 import { fileURLToPath } from 'url';
-
 import dotenv from 'dotenv';
 import express from 'express';
 import fetch from 'node-fetch';
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+dotenv.config({ path: '.env.development' });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,42 +18,40 @@ const DIST_PATH = path.resolve(__dirname, 'dist');
 const MCS_RECONNECT_DELAY = 10000;
 
 const app = express();
-
 app.use(express.static(DIST_PATH));
 
-const connectToMCS = async (): Promise<void> => {
+const connectToMcs = async () => {
   try {
-    const body = JSON.stringify({
-      name: APP_NAME,
-      url: `${DOMAIN}:${PORT}`,
-      component: 'Content',
-      backendName: BACKEND_NAME,
-    });
-    const response = await fetch(`${MCS_URL}/api/microfrontends`, {
+    const response = await fetch(`${MCS_URL}/microfrontends`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body,
+      body: JSON.stringify({
+        name: APP_NAME,
+        url: `${DOMAIN}:${PORT}`,
+        contentComponent: 'Content',
+        backendName: BACKEND_NAME,
+      }),
     });
 
     if (response.ok) {
       console.log('Successfully connected to MCS');
     } else {
       console.log(`Failed connecting to MCS. Status: ${response.status}`);
-      setTimeout(async () => connectToMCS(), MCS_RECONNECT_DELAY);
+      setTimeout(async () => connectToMcs(), MCS_RECONNECT_DELAY);
     }
   } catch (error) {
     console.log(`Failed connecting to MCS: ${error}`);
-    setTimeout(async () => connectToMCS(), MCS_RECONNECT_DELAY);
+    setTimeout(async () => connectToMcs(), MCS_RECONNECT_DELAY);
   }
 };
 
-const bootstrap = (): void => {
+const bootstrap = () => {
   try {
     app.listen(PORT, async () => {
       console.log(`App is running on port ${PORT}`);
-      await connectToMCS();
+      await connectToMcs();
     });
   } catch (error) {
     console.error(`Failed to start app: ${error}`);
